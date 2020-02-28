@@ -1,27 +1,33 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const app = express();
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const port = 1234;
 
-const simpleList = ['kupi cvijece', 'rijesi zagonetku', 'napravi dorucak', 'napisi zadacu'];
+const toDoListItems = ['kupi cvijece', 'rijesi zagonetku', 'napravi dorucak', 'napisi zadacu'];
 
 // GETTERS
 
 app.get('/randomCounterValue', (req, res) => res.json({ counter: Math.round(Math.random() * 100) }));
 
-app.get('/getListItems', (req, res) => res.json(simpleList));
+app.get('/getListItems', (req, res) => {
+    return res.json({toDoListItems});
+});
 
 app.post('/add2list', (req, res) => {
+   console.log(req.body);
    const newValue = req.body.newValue;
-   simpleList.push(newValue);
-   return res.json(simpleList);
+   toDoListItems.push(newValue);
+   return res.json({toDoListItems});
 });
 
 app.post('/deleteIndex', (req, res) => {
     const index2delete = req.body.index2delete;
-    simpleList.splice(index2delete, 1);
-    return res.json(simpleList);
+    toDoListItems.splice(index2delete, 1);
+    return res.json({toDoListItems});
 });
 
 
