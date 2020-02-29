@@ -10,6 +10,7 @@ import Navigation from '../src/components/Navigation'
 import CounterSimpleClass from './components/counter/CounterSimpleClass'
 import CounterSimpleFunction from './components/counter/CounterSimpleFunction'
 import ToDoListSimpleClass from './components/todo-list/ToDoListSimpleClass'
+import {} from './index.css';
 
 function App() {
     return (

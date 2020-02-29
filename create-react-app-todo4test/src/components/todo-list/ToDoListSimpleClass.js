@@ -1,4 +1,6 @@
 import React from 'react';
+import Modal from '../Modal';
+import ReactDOM from "react-dom";
 
 const postOptions = {
     method: "POST",
@@ -11,8 +13,13 @@ const postOptions = {
 class ToDoListSimpleClass extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { toDoListItems: [] };
+        this.state = {
+            toDoListItems: [],
+            isModalOpen: false,
+            activeItemIdx: null,
+        };
         this.onFormSubmitEvent = this.onFormSubmit.bind(this);
+        this.onCloseModalEvent = this.onCloseModal.bind(this);
         this.formInputRef = React.createRef();
     }
 
@@ -25,7 +32,6 @@ class ToDoListSimpleClass extends React.Component {
     }
 
     async onRemoveListItem(index2delete) {
-        console.log(index2delete)
         try {
             const removeListItem = await fetch('http://localhost:1234/deleteIndex', {
                 ...postOptions,
@@ -58,11 +64,50 @@ class ToDoListSimpleClass extends React.Component {
         return false;
     }
 
+    onSelectItem(activeItemIdx) {
+        this.setState({ isModalOpen: true, activeItemIdx });
+    }
+
+    onCloseModal() {
+        this.setState({ isModalOpen: false });
+    }
+
+    renderModal() {
+        const { toDoListItems, isModalOpen, activeItemIdx } = this.state;
+        let modalElement = document.getElementById('modal-container');
+        if (!modalElement) {
+            modalElement = document.createElement('div');
+            modalElement.id = 'modal-container';
+            document.body.append(modalElement);
+        }
+        if (isModalOpen) {
+            ReactDOM.render(<Modal
+                onCloseModal={this.onCloseModalEvent}
+                textToDisplay={toDoListItems[activeItemIdx]}
+            />, modalElement);
+        } else {
+            ReactDOM.render(null, modalElement);
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.isModalOpen !== this.state.isModalOpen) {
+            this.renderModal();
+        }
+    }
+
     render() {
         const { toDoListItems } = this.state;
         return (<div>
             <ul>
-                { toDoListItems.map((item, idx) => <li key={idx}>{item} <button onClick={this.onRemoveListItem.bind(this, idx)}>-</button></li>) }
+                { toDoListItems.map((item, idx) => {
+                    return (<li
+                        key={idx}>
+                        {item}
+                        <button onClick={this.onRemoveListItem.bind(this, idx)}>-</button>
+                        <button onClick={this.onSelectItem.bind(this, idx)}>modal</button>
+                    </li>)
+                }) }
             </ul>
             <form onSubmit={this.onFormSubmitEvent}>
                 <input type="text" ref={this.formInputRef}/>
