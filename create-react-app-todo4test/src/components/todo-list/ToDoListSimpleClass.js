@@ -1,6 +1,5 @@
 import React from 'react';
 import Modal from '../Modal';
-import ReactDOM from "react-dom";
 
 const postOptions = {
     method: "POST",
@@ -24,9 +23,17 @@ class ToDoListSimpleClass extends React.Component {
     }
 
     async componentDidMount() {
+        // Get list from server
         const fetchListFromServer = await fetch('http://localhost:1234/getListItems');
         const response = await fetchListFromServer.json();
         const { toDoListItems } = response;
+        // Setup modal container
+        this.modalElement = document.getElementById('modal-container');
+        if (!this.modalElement) {
+            this.modalElement = document.createElement('div');
+            this.modalElement.id = 'modal-container';
+            document.body.append(this.modalElement);
+        }
         this.setState({ toDoListItems });
         return false;
     }
@@ -72,32 +79,8 @@ class ToDoListSimpleClass extends React.Component {
         this.setState({ isModalOpen: false });
     }
 
-    renderModal() {
-        const { toDoListItems, isModalOpen, activeItemIdx } = this.state;
-        let modalElement = document.getElementById('modal-container');
-        if (!modalElement) {
-            modalElement = document.createElement('div');
-            modalElement.id = 'modal-container';
-            document.body.append(modalElement);
-        }
-        if (isModalOpen) {
-            ReactDOM.render(<Modal
-                onCloseModal={this.onCloseModalEvent}
-                textToDisplay={toDoListItems[activeItemIdx]}
-            />, modalElement);
-        } else {
-            ReactDOM.render(null, modalElement);
-        }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.isModalOpen !== this.state.isModalOpen) {
-            this.renderModal();
-        }
-    }
-
     render() {
-        const { toDoListItems } = this.state;
+        const { toDoListItems, activeItemIdx, isModalOpen } = this.state;
         return (<div>
             <ul>
                 { toDoListItems.map((item, idx) => {
@@ -112,6 +95,11 @@ class ToDoListSimpleClass extends React.Component {
             <form onSubmit={this.onFormSubmitEvent}>
                 <input type="text" ref={this.formInputRef}/>
             </form>
+            <Modal
+                isModalOpen={isModalOpen}
+                onCloseModal={this.onCloseModalEvent}
+                textToDisplay={toDoListItems[activeItemIdx]}
+            />
         </div>)
     }
 }

@@ -23,4 +23,5 @@ body {
   width: 30vw;
   height: 20vh;
   background-color: #61dafb;
+  pointer-events: all;
 }
