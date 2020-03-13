@@ -17,6 +17,15 @@ function Navigation() {
                 <li>
                     <Link to="/todo-list-simple-class">To-Do list simple with class</Link>
                 </li>
+                <li>
+                    <Link to="/todo-list-simple-function">To-Do list simple with function</Link>
+                </li>
+                <li>
+                    <Link to="/counter-test">Test: Counter</Link>
+                </li>
+                <li>
+                    <Link to="/todolist-test">Test: ToDo list</Link>
+                </li>
             </ul>
         </nav>
     );

@@ -10,7 +10,10 @@ import Navigation from '../src/components/Navigation'
 import CounterSimpleClass from './components/counter/CounterSimpleClass'
 import CounterSimpleFunction from './components/counter/CounterSimpleFunction'
 import ToDoListSimpleClass from './components/todo-list/ToDoListSimpleClass'
+import ToDoListSimpleFunction from './components/todo-list/ToDoListSimpleFunction'
 import {} from './index.css';
+import Counter from './components/counter/CounterTest';
+import TodoList from './components/todo-list/ToDoListTest';
 
 function App() {
     return (
@@ -18,6 +21,15 @@ function App() {
             <div>
                 <Navigation/>
                 <Switch>
+                    <Route path="/todolist-test">
+                        <TodoList />
+                    </Route>
+                    <Route path="/counter-test">
+                        <Counter />
+                    </Route>
+                    <Route path="/todo-list-simple-function">
+                        <ToDoListSimpleFunction />
+                    </Route>
                     <Route path="/todo-list-simple-class">
                         <ToDoListSimpleClass />
                     </Route>
