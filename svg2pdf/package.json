@@ -1,0 +1,16 @@
+{
+  "name": "svg2pdf",
+  "version": "1.0.0",
+  "description": "sandbox",
+  "main": "index.js",
+  "dependencies": {
+    "pdfkit": "^0.13.0",
+    "svg-to-pdfkit": "^0.1.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
